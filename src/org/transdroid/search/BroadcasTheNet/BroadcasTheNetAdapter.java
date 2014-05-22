@@ -16,7 +16,7 @@
  *	You should have received a copy of the GNU Lesser General Public 
  *	License along with Transdroid.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.transdroid.search.IpTorrents;
+package org.transdroid.search.BroadcasTheNet;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -50,20 +50,20 @@ import android.content.Context;
 /**
  * An adapter that provides access to IPTorrents searches by parsing the raw HTML output.
  */
-public class IpTorrentsAdapter implements ISearchAdapter {
+public class BroadcasTheNetAdapter implements ISearchAdapter {
 
 	private static final String LOGIN_USER = "username";
 	private static final String LOGIN_PASS = "password";
-	private static final String LOGINURL = "http://www.iptorrents.com/torrents/";
-	private static final String QUERYURL = "http://www.iptorrents.com/torrents/?q=%1$s%2$s";
+	private static final String LOGINURL = "http://www.broadcasthe.net/login.php";
+	private static final String QUERYURL = "http://www.broadcasthe.net/torrents.php?q=%1$s%2$s";
 	private static final String SORT_COMPOSITE = "";
 	private static final String SORT_SEEDS = ";o=seeders";
 	private static final int CONNECTION_TIMEOUT = 8000;
 
 	private DefaultHttpClient prepareRequest(Context context) throws Exception {
 
-		String username = SettingsHelper.getSiteUser(context, TorrentSite.IpTorrents);
-		String password = SettingsHelper.getSitePass(context, TorrentSite.IpTorrents);
+		String username = SettingsHelper.getSiteUser(context, TorrentSite.BroadcasTheNet);
+		String password = SettingsHelper.getSitePass(context, TorrentSite.BroadcasTheNet);
 		if (username == null || password == null) {
 			throw new InvalidParameterException(
 					"No username or password was provided, while this is required for this private site.");
@@ -82,7 +82,7 @@ public class IpTorrentsAdapter implements ISearchAdapter {
 		HttpResponse loginResult = httpclient.execute(loginPost);
 		if (loginResult.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 			// Failed to sign in
-			throw new LoginException("Login failure for IPTorrents with user " + username);
+			throw new LoginException("Login failure for BroadcasTheNet with user " + username);
 		}
 
 		return httpclient;
@@ -135,7 +135,7 @@ public class IpTorrentsAdapter implements ISearchAdapter {
 
 			// Texts to find subsequently
 			final String RESULTS = "<table class=torrents align=center border=1>";
-			final String NOTORRENTS = "No Torrents Found";
+			final String NOTORRENTS = "No search results";
 			final String TORRENT = "<tr><td class=t_label>";
 
 			// Parse the search results from HTML by looking for the identifying texts
